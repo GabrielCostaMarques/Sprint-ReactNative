@@ -1,7 +1,18 @@
 import React, { memo, useEffect, useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, TextInput, View, Image} from 'react-native';
+import { Button,
+   FlatList,
+   StyleSheet,
+   Text,
+   TextInput,
+   View,
+   Image,
+   TouchableOpacity,
+   StatusBar} from 'react-native';
+
 import imagemIA from './assets/IconIa.png'
 import seta from './assets/seta.png'
+import { AntDesign } from '@expo/vector-icons'; 
+import { setStatusBarNetworkActivityIndicatorVisible, setStatusBarStyle } from 'expo-status-bar';
 
 export default function Chat() {
     const [messages, setMessages] = useState([])
@@ -11,15 +22,20 @@ export default function Chat() {
     }, [])
     const sendMsg = () => { setMessages([{ id: new Date().getTime(), type: 'send', text: message }, ...messages]); setMessage('') };
     const receiveMsg = () => { setMessages([{ id: new Date().getTime(), type: 'receive', text: message }, ...messages]); setMessage('') };
-    return (
+    return ( 
         <View style={styles.container}>
+          <StatusBar animated={true}
+                    backgroundColor={"#ef4019"}/>
             <View className="topo" style={styles.topo}><Image source={seta}/></View>
             <FlatList data={messages} keyExtractor={x => x.id} renderItem={({ item, index }) => <ChatItemMemo {...{ item, index }} />} inverted contentContainerStyle={styles.listStyle} />
             <View style={styles.bottom}>
-                <Button title='Resposta(TESTE)' onPress={receiveMsg} disabled={message.length === 0} />
+                
                 <TextInput style={styles.input} value={message} placeholder='Type your message' onChangeText={setMessage} />
-                <Button title='Send' onPress={sendMsg} disabled={message.length === 0} />
+                <TouchableOpacity style={styles.button} onPress={sendMsg}disabled={message.length===0}>
+                  <Text style={styles.bottomText}><AntDesign name="right" size={24} color="black" /></Text>
+                </TouchableOpacity>
             </View>
+          
         </View>
     )
 }
@@ -63,19 +79,32 @@ const styles = StyleSheet.create({
         borderBottomStartRadius:250,
         alignItems:"center",
         justifyContent:"center",
-        padding:5
+        padding:1
     },
+
+    bottomText:{
+      padding:15,
+      borderRadius: 32,
+      margin:10,
+      backgroundColor: '#ef4023',
+      justifyContent: 'center',
+      alignItems: 'center', 
+
+    },
+
     bottom: {
-        backgroundColor: 'lightgrey',
         flexDirection: 'row',
         alignItems: 'center'
     },
     input: {
-        flex: 1,
-        padding: 0,
-        fontSize: 18,
-        paddingVertical: 10,
-        paddingHorizontal: 10
+      flex:2,
+      margin:10,
+      padding: 0,
+      fontSize: 18,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      backgroundColor:"#ef4023",
+      borderRadius:20
     },
     chatItemCommon: {
         marginBottom: 2
