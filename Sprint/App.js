@@ -1,137 +1,90 @@
-import React, { memo, useEffect, useState } from 'react';
-import { Button,
-   FlatList,
-   StyleSheet,
-   Text,
-   TextInput,
-   View,
-   Image,
-   TouchableOpacity,
-   StatusBar} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
-import imagemIA from './assets/IconIa.png'
-import seta from './assets/seta.png'
-import { AntDesign } from '@expo/vector-icons'; 
-import { setStatusBarNetworkActivityIndicatorVisible, setStatusBarStyle } from 'expo-status-bar';
+import Home from './assets/Home.png';
+import Arrow from'./assets/arrow.png'
 
-export default function Chat() {
-    const [messages, setMessages] = useState([])
-    const [message, setMessage] = useState('');
-    useEffect(() => {
-        setTimeout(() => setMessages(msgs => ([{ id: new Date().getTime(), type: 'receive', text: 'Olá, como podemos te ajudar?' }, ...msgs])), 1000);
-    }, [])
-    const sendMsg = () => { setMessages([{ id: new Date().getTime(), type: 'send', text: message }, ...messages]); setMessage('') };
-    const receiveMsg = () => { setMessages([{ id: new Date().getTime(), type: 'receive', text: message }, ...messages]); setMessage('') };
-    return ( 
-        <View style={styles.container}>
-          <StatusBar animated={true}
-                    backgroundColor={"#ef4019"}/>
-            <View className="topo" style={styles.topo}><Image source={seta}/></View>
-            <FlatList data={messages} keyExtractor={x => x.id} renderItem={({ item, index }) => <ChatItemMemo {...{ item, index }} />} inverted contentContainerStyle={styles.listStyle} />
-            <View style={styles.bottom}>
-                
-                <TextInput style={styles.input} value={message} placeholder='Type your message' onChangeText={setMessage} />
-                <TouchableOpacity style={styles.button} onPress={sendMsg}disabled={message.length===0}>
-                  <Text style={styles.bottomText}><AntDesign name="right" size={24} color="black" /></Text>
-                </TouchableOpacity>
-            </View>
-          
-        </View>
-    )
-}
-  function ChatItem({ item }) {
-    const validarImage = () => {  
-      if (item.type === 'receive') {
-        return (
-          <View style={[styles.chatItemCommon, styles.receive]}> 
-            <Image source={imagemIA}/> 
-            <Text style={styles.msgtxt_receive}>{item.text}</Text>
-          </View>
-        );
-      } else {
-        return (
-          <View style={[styles.chatItemCommon, styles.send]}> 
-            <Text style={styles.msgtxt_send}>{item.text}</Text>
-          </View>
-        );
-      }
-    };
-  
-    return (
-      <View>
-        {validarImage()}
+export default function App() {
+  const [activeDotIndex, setActiveDotIndex] = useState(0);
+
+  const handleDotPress = (index) => {
+    setActiveDotIndex(index);
+  };
+
+  const dots = ['dot 1', 'dot 2', 'dot 3'];
+
+  return (
+    <View style={styles.container}>
+      <Image style={styles.logo} source={Home} />
+      <Text style={styles.titulo}>Seja Bem - Vindo !</Text>
+      <Text style={styles.subtitulo}>
+        Somos a Byte Wizards. Aqui está uma prévia da ferramenta que estamos desenvolvendo...
+      </Text>
+
+      <Image style={styles.arrow}source={Arrow}/>
+      <View style={styles.container}></View>
+      <View style={styles.dotsContainer}>
+        {dots.map((dot, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[
+              styles.dot,
+              activeDotIndex === index && styles.activeDot
+            ]}
+            onPress={() => handleDotPress(index)}
+          ></TouchableOpacity>
+        ))}
       </View>
-    );
-  }
-  
-
-// put you logic of rerendering here (major part for performance)
-const ChatItemMemo = memo(ChatItem, (prevProps, nextProps) => true)
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-
-    topo:{
-        backgroundColor: '#ef4023',
-        borderBottomEndRadius:250,
-        borderBottomStartRadius:250,
-        alignItems:"center",
-        justifyContent:"center",
-        padding:1
-    },
-
-    bottomText:{
-      padding:15,
-      borderRadius: 32,
-      margin:10,
-      backgroundColor: '#ef4023',
-      justifyContent: 'center',
-      alignItems: 'center', 
-
-    },
-
-    bottom: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    input: {
-      flex:2,
-      margin:10,
-      padding: 0,
-      fontSize: 18,
-      paddingVertical: 10,
-      paddingHorizontal: 15,
-      backgroundColor:"#ef4023",
-      borderRadius:20
-    },
-    chatItemCommon: {
-        marginBottom: 2
-    },
-    send: {
-        alignSelf: 'flex-end',
-        marginTop:15,
-    },
-    receive: {
-        alignSelf: 'flex-start',
-    },
-    msgtxt_send: {
-        backgroundColor: '#ef4023',
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        borderRadius: 10,
-        maxWidth: '75%'
-    },
-    msgtxt_receive: {
-      backgroundColor: 'lightgrey',
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderRadius: 10,
-      maxWidth: '75%'
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ef4023',
   },
-    listStyle: {
-        paddingHorizontal: 10,
-        paddingBottom: 20
-    }
-})
+  logo: {
+    marginTop:"30%",
+    marginBottom:50,
+    width: 260,
+    height: 260,
+    opacity: 0.7,
+  },
+  titulo: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  subtitulo: {
+
+    fontSize: 20,
+    fontWeight: '700',
+    textAlign: 'center',
+    width: 350,
+    lineHeight: 25,
+  },
+  dotsContainer: {
+    flex:1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 50,
+  },
+  dot: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor:'rgba(0,0,0,0.5)',
+    marginHorizontal: 15,
+  },
+  activeDot: {
+    backgroundColor: 'white',
+  },
+
+  arrow:{
+    color:'white'
+  }
+});
