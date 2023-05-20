@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 import Home from './assets/Home.png';
 import Arrow from'./assets/arrow.png'
-
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
+{/*O CÓDIGO ABAIXO FOI ESCRITO BASEADO NA TELA DO ANDROID STUDIO, FOI FEITO UM TESTE NO EXPO (WEB) E O LAYOUT QUEBRA, PORÉM SE COLOCAR NO "ANDROID" FICA CERTO*/}
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------
 export default function App() {
   const [activeDotIndex, setActiveDotIndex] = useState(0);
 
@@ -20,8 +22,8 @@ export default function App() {
       <Text style={styles.subtitulo}>
         Somos a Byte Wizards. Aqui está uma prévia da ferramenta que estamos desenvolvendo...
       </Text>
-
-      <Image style={styles.arrow}source={Arrow}/>
+      <TouchableOpacity style={styles.button}><Image style={styles.arrow}source={Arrow}/></TouchableOpacity>
+      
       <View style={styles.container}></View>
       <View style={styles.dotsContainer}>
         {dots.map((dot, index) => (
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 10,
   },
   dot: {
     width: 20,
@@ -84,7 +86,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
 
+  button:{
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    paddingHorizontal: 25,
+    borderRadius: 30,
+    position:'absolute',
+    top:600,
+    left:250
+  },
+  
   arrow:{
-    color:'white'
+    width:50,
+    height:50,
   }
 });
